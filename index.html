@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Windows Vista Ultimate</title>
+  <title>Windows Vista Ultimate (HTML)</title>
 
   <style>
     :root{
@@ -29,7 +29,8 @@
         radial-gradient(900px 600px at 25% 85%, rgba(120,255,160,.18), transparent 55%),
         linear-gradient(180deg, #0b2a1c 0%, #0b2634 35%, #071b24 100%);
     }
-    .aurora{ position:absolute; inset:-20%;
+    .aurora{
+      position:absolute; inset:-20%;
       background: conic-gradient(from 210deg at 30% 35%,
         rgba(120,255,170,.0),
         rgba(120,255,170,.22),
@@ -42,16 +43,14 @@
       transform: rotate(-6deg);
       pointer-events:none;
     }
-    .vignette{ position:absolute; inset:0;
+    .vignette{
+      position:absolute; inset:0;
       background: radial-gradient(circle at 50% 35%, transparent 40%, rgba(0,0,0,.35) 100%);
       pointer-events:none;
     }
     .hidden{ display:none !important; }
 
-    /* =========================
-       BOOT GIF
-       Put vista.gif next to this HTML (or change the URL)
-       ========================= */
+    /* ===== Boot GIF (place vista.gif next to index.html) ===== */
     #bootScreen{
       position:fixed;
       inset:0;
@@ -61,10 +60,7 @@
     }
     #bootScreen.open{ display:block; }
 
-    /* =========================
-       SHUTDOWN GIF
-       Put shutdown.gif next to this HTML (or change the URL)
-       ========================= */
+    /* ===== Shutdown GIF (place shutdown.gif next to index.html) ===== */
     #shutdownGifOverlay{
       position:fixed;
       inset:0;
@@ -74,9 +70,7 @@
     }
     #shutdownGifOverlay.open{ display:block; }
 
-    /* =========================
-       Powered-off black screen with center text
-       ========================= */
+    /* ===== Powered-off black screen with typing text ===== */
     #powerOff{
       position:fixed;
       inset:0;
@@ -99,14 +93,24 @@
       border: 1px solid rgba(255,255,255,.10);
       backdrop-filter: blur(6px);
       user-select:none;
+      min-width: 220px;
+      text-align:center;
     }
     #bootPcText:hover{
       background: rgba(255,255,255,.10);
       border-color: rgba(255,255,255,.14);
     }
     #bootPcText:active{ transform: translateY(1px); }
+    .caret{
+      display:inline-block;
+      width:10px;
+      margin-left:4px;
+      opacity:.9;
+      animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink{ 50%{opacity:0;} }
 
-    /* ===== Desktop ===== */
+    /* ===== Desktop icons ===== */
     #desktop{
       position:absolute; inset:0 0 48px 0;
       padding:18px;
@@ -643,7 +647,7 @@
 
   <!-- Powered off screen -->
   <div id="powerOff" aria-hidden="true">
-    <div id="bootPcText" title="Click to boot">Boot up PC</div>
+    <div id="bootPcText" title="Click to boot">Boot up PC<span class="caret">█</span></div>
   </div>
 
   <!-- Gadgets -->
@@ -665,11 +669,11 @@
     <div class="gadget">
       <div class="g-head"><b>Notes</b><span class="g-small">sticky</span></div>
       <div class="g-body">
-        <textarea class="note" id="noteBox" spellcheck="false">Remember:
-• Aero Glass
-• Wi-Fi panel
-• Volume slider
-• PowerOff screen</textarea>
+        <textarea class="note" id="noteBox" spellcheck="false">Vista Web:
+• Boot GIF + startup sound
+• Shutdown GIF + shutdown sound
+• Wi-Fi + volume panel
+• Gadgets</textarea>
       </div>
     </div>
   </div>
@@ -696,13 +700,13 @@
       <div class="user-card">
         <div style="display:flex; align-items:center; gap:10px;">
           <div class="avatar"></div>
-          <div><div class="user-name">Guest</div><div style="font-size:12px; color: var(--muted);">Welcome</div></div>
+          <div><div class="user-name">Vista User</div><div style="font-size:12px; color: var(--muted);">Welcome</div></div>
         </div>
         <div class="power" id="powerBtn">Shut down</div>
       </div>
       <div class="tile">
-        <p class="t" style="margin:0 0 6px;">Boot/Shutdown GIF</p>
-        <p class="d" style="margin:0;">Put <b>vista.gif</b> and <b>shutdown.gif</b> next to this HTML.</p>
+        <p class="t" style="margin:0 0 6px;">Edition</p>
+        <p class="d" style="margin:0;" id="editionLabel">Windows Vista Ultimate</p>
       </div>
       <div class="tile">
         <p class="t" style="margin:0 0 6px;">Wi-Fi Networks</p>
@@ -792,17 +796,65 @@
   </div>
 
   <script>
-    // Put these files next to your HTML (same folder) OR change the URLs in CSS:
-    // 1) vista.gif      (boot)
-    // 2) shutdown.gif   (shutdown)
+    // Put these files next to index.html (repo root for GitHub Pages):
+    // vista.gif
+    // shutdown.gif
+    // windows-vista-startup.mp3
+    // windows-vista-shutdown.mp3
 
     const OS_NAME = "Windows Vista Ultimate";
 
-    // Elements
+    // ===== Vista sounds (your MP3 files) =====
+    const vistaStartup = new Audio("windows-vista-startup.mp3");
+    const vistaShutdown = new Audio("windows-vista-shutdown.mp3");
+    vistaStartup.preload = "auto";
+    vistaShutdown.preload = "auto";
+    vistaStartup.volume = 0.9;
+    vistaShutdown.volume = 0.9;
+
+    let audioUnlocked = false;
+    let startupPlayed = false;
+
+    async function tryPlay(aud) {
+      try {
+        aud.currentTime = 0;
+        await aud.play();
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    async function playStartupOnce() {
+      if (startupPlayed) return;
+      const ok = await tryPlay(vistaStartup);
+      if (ok) startupPlayed = true;
+    }
+
+    async function unlockAudioOnce() {
+      if (audioUnlocked) return;
+      const ok = await tryPlay(vistaStartup); // unlock + play once on first gesture
+      if (ok) {
+        audioUnlocked = true;
+        startupPlayed = true;
+        window.removeEventListener("pointerdown", unlockAudioOnce, true);
+        window.removeEventListener("keydown", unlockAudioOnce, true);
+      }
+    }
+
+    function playShutdownSound() {
+      tryPlay(vistaShutdown);
+    }
+
+    window.addEventListener("pointerdown", unlockAudioOnce, true);
+    window.addEventListener("keydown", unlockAudioOnce, true);
+
+    // ===== Elements =====
     const bootScreen = document.getElementById("bootScreen");
     const shutdownGifOverlay = document.getElementById("shutdownGifOverlay");
     const powerOff = document.getElementById("powerOff");
     const bootPcText = document.getElementById("bootPcText");
+    document.getElementById("editionLabel").textContent = OS_NAME;
 
     // UI groups
     const uiToHide = ["desktop","windows","taskbar","gadgets","startMenu","wifiPanel","soundPanel","modalBackdrop"]
@@ -813,17 +865,39 @@
       uiToHide.forEach(el => el.classList.toggle("hidden", !visible));
     }
 
-    // Boot
+    // ===== Power-off typing =====
+    let typeTimer = null;
+    function typeBootText() {
+      if (typeTimer) { clearInterval(typeTimer); typeTimer = null; }
+      const msg = "Boot up PC";
+      let i = 0;
+      bootPcText.innerHTML = `<span id="bootMsg"></span><span class="caret">█</span>`;
+      const span = document.getElementById("bootMsg");
+      typeTimer = setInterval(() => {
+        span.textContent = msg.slice(0, i);
+        i += 1;
+        if (i > msg.length) {
+          clearInterval(typeTimer);
+          typeTimer = null;
+        }
+      }, 65);
+    }
+
+    // ===== Boot =====
     function startBoot(ms = 3500){
       powerOff.classList.remove("open");
       powerOff.setAttribute("aria-hidden","true");
 
+      shutdownGifOverlay.classList.remove("open");
+      shutdownGifOverlay.setAttribute("aria-hidden","true");
+
       bootScreen.classList.add("open");
       bootScreen.setAttribute("aria-hidden","false");
 
-      shutdownGifOverlay.classList.remove("open");
-
       setUIVisible(false);
+
+      // Sound (may be blocked until first user gesture)
+      playStartupOnce();
 
       setTimeout(() => {
         bootScreen.classList.remove("open");
@@ -835,7 +909,7 @@
     // Click "Boot up PC" to boot
     bootPcText.addEventListener("click", () => startBoot(3500));
 
-    // Clock (taskbar + gadget)
+    // ===== Clock (taskbar + gadget) =====
     const clockEl = document.getElementById('clock');
     const gClockEl = document.getElementById('gClock');
     const gDateEl  = document.getElementById('gDate');
@@ -851,7 +925,7 @@
     setInterval(updateClocks, 1000);
     updateClocks();
 
-    // CPU gadget (simulated)
+    // ===== CPU gadget (simulated) =====
     const cpuBar = document.getElementById('cpuBar');
     const cpuPct = document.getElementById('cpuPct');
     setInterval(() => {
@@ -863,7 +937,7 @@
       cpuPct.textContent = next + "%";
     }, 900);
 
-    // Window manager (simple)
+    // ===== Window manager =====
     const windowsLayer = document.getElementById('windows');
     const tasksBar = document.getElementById('tasks');
     const startOrb = document.getElementById('startOrb');
@@ -931,13 +1005,15 @@
       `},
       about: { title:"About", body:() => `
         <div class="sidebar"><div class="side-title">Info</div>
-          <div class="side-item">Boot: vista.gif</div>
-          <div class="side-item">Shutdown: shutdown.gif</div>
+          <div class="side-item">Boot GIF: vista.gif</div>
+          <div class="side-item">Shutdown GIF: shutdown.gif</div>
+          <div class="side-item">Startup MP3</div>
+          <div class="side-item">Shutdown MP3</div>
           <div class="side-item">Edition: ${OS_NAME}</div>
         </div>
         <div class="main">
           <div class="hero">
-            <div><h2>${OS_NAME}</h2><p>HTML/CSS/JS Vista lookalike (demo).</p></div>
+            <div><h2>${OS_NAME}</h2><p>HTML/CSS/JS Vista lookalike.</p></div>
             <div class="pill">Aero Glass</div>
           </div>
           <div class="tile">
@@ -946,7 +1022,11 @@
           </div>
           <div class="tile">
             <p class="t">Power Off</p>
-            <p class="d">Shutdown → black screen → click <b>Boot up PC</b> to boot again.</p>
+            <p class="d">Shut down → black screen → “Boot up PC” types in. Click it to boot.</p>
+          </div>
+          <div class="tile">
+            <p class="t">Autoplay note</p>
+            <p class="d">Browsers may block startup sound until your first click/keypress.</p>
           </div>
         </div>
       `}
@@ -1133,7 +1213,7 @@
       });
     });
 
-    // Wi-Fi + Sound Panels
+    // Wi-Fi + Sound panels
     const netBtn = document.getElementById('netBtn');
     const sndBtn = document.getElementById('sndBtn');
     const wifiPanel = document.getElementById('wifiPanel');
@@ -1156,11 +1236,11 @@
       connected: null,
       networks: [
         { name: "Varka Free Wifi", sec: "Open", strength: "Excellent" },
-        { name: "msadif", sec: "WPA2", strength: "Fair" },
-        { name: "wireless", sec: "WPA2", strength: "Good" },
+        { name: "msadif", sec: "WPA2", strength: "Good" },
+        { name: "wireless", sec: "WPA2", strength: "Fair" },
       ]
     };
-    const audio = { volume: 70, muted: false, lastVolume: 70 };
+    const audioUI = { volume: 70, muted: false, lastVolume: 70 };
 
     function positionPanel(panelEl, anchorEl){
       const a = anchorEl.getBoundingClientRect();
@@ -1203,10 +1283,10 @@
       });
     }
     function renderSound(){
-      volSlider.value = String(audio.volume);
-      volChip.textContent = `${audio.muted ? 0 : audio.volume}%`;
-      muteState.textContent = audio.muted ? "Muted" : "Not muted";
-      sndBtn.textContent = audio.muted || audio.volume === 0 ? "🔇" : "🔊";
+      volSlider.value = String(audioUI.volume);
+      volChip.textContent = `${audioUI.muted ? 0 : audioUI.volume}%`;
+      muteState.textContent = audioUI.muted ? "Muted" : "Not muted";
+      sndBtn.textContent = audioUI.muted || audioUI.volume === 0 ? "🔇" : "🔊";
     }
     function toggleWifiPanel(e){
       e.stopPropagation();
@@ -1245,15 +1325,15 @@
       setTimeout(() => { wifiHint.textContent = wifi.on ? "Networks available" : "Wi-Fi is turned off"; }, 550);
     });
     volSlider.addEventListener('input', (e) => {
-      audio.volume = parseInt(e.target.value, 10);
-      if(audio.volume > 0){ audio.lastVolume = audio.volume; audio.muted = false; }
+      audioUI.volume = parseInt(e.target.value, 10);
+      if(audioUI.volume > 0){ audioUI.lastVolume = audioUI.volume; audioUI.muted = false; }
       renderSound();
     });
     muteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      audio.muted = !audio.muted;
-      if(audio.muted){ audio.lastVolume = audio.volume; }
-      else { if(audio.volume === 0) audio.volume = audio.lastVolume || 50; }
+      audioUI.muted = !audioUI.muted;
+      if(audioUI.muted){ audioUI.lastVolume = audioUI.volume; }
+      else { if(audioUI.volume === 0) audioUI.volume = audioUI.lastVolume || 50; }
       renderSound();
     });
 
@@ -1284,21 +1364,27 @@
       toggleStartMenu(false);
       closePanels();
 
+      // Shutdown sound
+      playShutdownSound();
+
       // Hide UI
       setUIVisible(false);
 
       // Play shutdown.gif
       powerOff.classList.remove("open");
+      powerOff.setAttribute("aria-hidden","true");
+
       shutdownGifOverlay.classList.add('open');
       shutdownGifOverlay.setAttribute('aria-hidden','false');
 
-      // After gif -> power off screen with Boot up PC
+      // After gif -> power off screen + typing
       setTimeout(() => {
         shutdownGifOverlay.classList.remove('open');
         shutdownGifOverlay.setAttribute('aria-hidden','true');
 
         powerOff.classList.add("open");
         powerOff.setAttribute("aria-hidden","false");
+        typeBootText();
       }, SHUTDOWN_GIF_MS);
     }
 
@@ -1306,6 +1392,9 @@
       closeShutdownDialog();
       toggleStartMenu(false);
       closePanels();
+
+      // shutdown sound
+      playShutdownSound();
 
       // Close any open windows
       for (const [id, obj] of state.windows){
@@ -1317,19 +1406,23 @@
       // Reset demo states
       wifi.connected = null;
       wifi.on = true;
-      audio.muted = false;
-      audio.volume = 70;
-      audio.lastVolume = 70;
+      audioUI.muted = false;
+      audioUI.volume = 70;
+      audioUI.lastVolume = 70;
       renderWifi();
       renderSound();
 
       // quick shutdown.gif then boot
       setUIVisible(false);
       powerOff.classList.remove("open");
+      powerOff.setAttribute("aria-hidden","true");
+
       shutdownGifOverlay.classList.add('open');
+      shutdownGifOverlay.setAttribute('aria-hidden','false');
 
       setTimeout(() => {
         shutdownGifOverlay.classList.remove('open');
+        shutdownGifOverlay.setAttribute('aria-hidden','true');
         startBoot(3500);
         setTimeout(() => openApp('about'), 3600);
       }, Math.min(2500, SHUTDOWN_GIF_MS));
@@ -1352,14 +1445,13 @@
     });
     [startMenu, wifiPanel, soundPanel, modalBackdrop].forEach(el => el.addEventListener('click', (e) => e.stopPropagation()));
 
-    // Keyboard ESC closes start/panels/dialog
+    // Keyboard
     window.addEventListener('keydown', (e) => {
       if(e.key === 'Escape'){
         if(modalBackdrop.classList.contains('open')) closeShutdownDialog();
         toggleStartMenu(false);
         closePanels();
       }
-      // Optional: press Enter on power-off screen to boot
       if(e.key === 'Enter' && powerOff.classList.contains('open')){
         startBoot(3500);
       }
@@ -1372,9 +1464,9 @@
 
     // Boot on load
     window.addEventListener("load", () => startBoot(3500));
+
+    // Ensure power-off typing looks nice if user opens it somehow
+    if (powerOff.classList.contains("open")) typeBootText();
   </script>
 </body>
-
 </html>
-
-
