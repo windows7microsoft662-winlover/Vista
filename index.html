@@ -159,6 +159,19 @@
       radial-gradient(circle at 30% 25%, rgba(255,255,255,.75), rgba(255,255,255,.15) 45%, rgba(0,0,0,.10) 75%),
       linear-gradient(180deg, rgba(60,150,255,.30), rgba(0,0,0,.22)); }
 
+    /* Icon sizes (for View menu) */
+    .icons-large .icon{ width: 96px; }
+    .icons-large .icon .glyph{ width: 58px; height: 58px; }
+    .icons-large .icon .label{ font-size: 13px; }
+
+    .icons-medium .icon{ width: 86px; }
+    .icons-medium .icon .glyph{ width: 52px; height: 52px; }
+    .icons-medium .icon .label{ font-size: 12.5px; }
+
+    .icons-small .icon{ width: 74px; }
+    .icons-small .icon .glyph{ width: 44px; height: 44px; border-radius: 10px; }
+    .icons-small .icon .label{ font-size: 12px; }
+
     /* ===== Windows layer ===== */
     #windows{ position:absolute; inset:0 0 48px 0; pointer-events:none; }
     .window{
@@ -634,6 +647,86 @@
       color: rgba(255,255,255,.90);
     }
     .btn:hover{ background: rgba(255,255,255,.14); }
+
+    /* ===== Right-click (Vista) context menu + submenus ===== */
+    #ctxMenu{
+      position: fixed;
+      min-width: 250px;
+      border-radius: 14px;
+      padding: 6px;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.24);
+      box-shadow: 0 26px 70px rgba(0,0,0,.55);
+      backdrop-filter: blur(16px) saturate(140%);
+      z-index: 60000;
+      display:none;
+    }
+    #ctxMenu.open{ display:block; }
+
+    .ctx-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      font-size: 12.5px;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 1px 2px rgba(0,0,0,.55);
+      position:relative;
+    }
+    .ctx-item:hover{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.14);
+    }
+    .ctx-item:active{ transform: translateY(1px); }
+
+    .ctx-ic{
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      display:grid;
+      place-items:center;
+      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+      font-size: 12px;
+    }
+    .ctx-sep{
+      height:1px;
+      margin: 6px 6px;
+      background: rgba(255,255,255,.14);
+    }
+    .ctx-sub{
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      margin-left:auto;
+    }
+
+    /* Submenu panel */
+    .ctx-submenu{
+      position: absolute;
+      top: 0;
+      left: calc(100% + 6px);
+      min-width: 220px;
+      border-radius: 14px;
+      padding: 6px;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.24);
+      box-shadow: 0 26px 70px rgba(0,0,0,.55);
+      backdrop-filter: blur(16px) saturate(140%);
+      display:none;
+      z-index: 60001;
+    }
+    .ctx-item.has-sub:hover > .ctx-submenu{ display:block; }
+
+    .ctx-check{
+      width:18px; display:inline-block;
+      color: rgba(255,255,255,.85);
+      text-align:center;
+      margin-left:-4px;
+    }
   </style>
 </head>
 
@@ -673,12 +766,13 @@
 • Boot GIF + startup sound
 • Shutdown GIF + shutdown sound
 • Wi-Fi + volume panel
-• Gadgets</textarea>
+• Gadgets
+• Right-click menu + submenus</textarea>
       </div>
     </div>
   </div>
 
-  <div id="desktop" aria-label="Desktop">
+  <div id="desktop" class="icons-medium" aria-label="Desktop">
     <div class="icon" data-open="computer"><div class="glyph computer"></div><div class="label">Computer</div></div>
     <div class="icon" data-open="recycle"><div class="glyph recycle"></div><div class="label">Recycle Bin</div></div>
     <div class="icon" data-open="folder"><div class="glyph folder"></div><div class="label">Documents</div></div>
@@ -795,6 +889,50 @@
     </div>
   </div>
 
+  <!-- Right-click context menu (Vista-ish) -->
+  <div id="ctxMenu" role="menu" aria-label="Desktop menu">
+    <div class="ctx-item has-sub" data-ctx="view">
+      <div class="ctx-ic">👁️</div>
+      View
+      <div class="ctx-sub">›</div>
+
+      <div class="ctx-submenu" data-sub="view">
+        <div class="ctx-item" data-view="large"><span class="ctx-check" id="chkLarge"> </span>Large icons</div>
+        <div class="ctx-item" data-view="medium"><span class="ctx-check" id="chkMedium">✓</span>Medium icons</div>
+        <div class="ctx-item" data-view="small"><span class="ctx-check" id="chkSmall"> </span>Small icons</div>
+      </div>
+    </div>
+
+    <div class="ctx-item" data-ctx="refresh">
+      <div class="ctx-ic">🔄</div>
+      Refresh
+    </div>
+
+    <div class="ctx-sep"></div>
+
+    <div class="ctx-item has-sub" data-ctx="personalize">
+      <div class="ctx-ic">🎨</div>
+      Personalize
+      <div class="ctx-sub">›</div>
+
+      <div class="ctx-submenu" data-sub="personalize">
+        <div class="ctx-item" data-pers="wallpaper">Wallpaper (cycle)</div>
+        <div class="ctx-item" data-pers="glass">Aero Glass: <span id="glassState" style="margin-left:6px; color:rgba(255,255,255,.75);">On</span></div>
+        <div class="ctx-item" data-pers="tint">Accent tint (cycle)</div>
+      </div>
+    </div>
+
+    <div class="ctx-item" data-ctx="resolution">
+      <div class="ctx-ic">🖵</div>
+      Screen resolution
+    </div>
+
+    <div class="ctx-item" data-ctx="gadgets">
+      <div class="ctx-ic">🧩</div>
+      Gadgets
+    </div>
+  </div>
+
   <script>
     // Put these files next to index.html (repo root for GitHub Pages):
     // vista.gif
@@ -837,7 +975,7 @@
       }
     }
 
-    // Startup sound: ONLY plays from user gesture (100% reliable)
+    // Startup sound: ONLY plays from user gesture (reliable)
     let startupPlayed = false;
     async function playStartupFromGesture(){
       if(startupPlayed) return true;
@@ -849,7 +987,7 @@
       return ok;
     }
 
-    // Shutdown sound: always from user gesture, but we still use a fresh Audio each time
+    // Shutdown sound
     function playShutdownSound(){
       const s = new Audio("windows-vista-shutdown.mp3");
       s.preload = "auto";
@@ -997,9 +1135,8 @@
         <div class="sidebar"><div class="side-title">Info</div>
           <div class="side-item">Boot GIF: vista.gif</div>
           <div class="side-item">Shutdown GIF: shutdown.gif</div>
-          <div class="side-item">Startup MP3</div>
-          <div class="side-item">Shutdown MP3</div>
           <div class="side-item">Edition: ${OS_NAME}</div>
+          <div class="side-item">Right-click desktop menu</div>
         </div>
         <div class="main">
           <div class="hero">
@@ -1011,8 +1148,12 @@
             <p class="d">Click 📶 (Wi-Fi) and 🔊 (Sound).</p>
           </div>
           <div class="tile">
+            <p class="t">Desktop Menu</p>
+            <p class="d">Right-click the desktop → View / Personalize / Resolution / Gadgets.</p>
+          </div>
+          <div class="tile">
             <p class="t">Power Off</p>
-            <p class="d">Shut down → black screen → “Boot up PC” types in. Click it to boot.</p>
+            <p class="d">Shut down → back to “Boot up PC”. Click to boot + startup sound.</p>
           </div>
         </div>
       `}
@@ -1423,6 +1564,7 @@
       if(modalBackdrop.classList.contains('open')) return;
       toggleStartMenu(false);
       closePanels();
+      closeCtx();
     });
     [startMenu, wifiPanel, soundPanel, modalBackdrop].forEach(el => el.addEventListener('click', (e) => e.stopPropagation()));
 
@@ -1432,9 +1574,9 @@
         if(modalBackdrop.classList.contains('open')) closeShutdownDialog();
         toggleStartMenu(false);
         closePanels();
+        closeCtx();
       }
       if(e.key === 'Enter' && powerOff.classList.contains('open')){
-        // User gesture -> startup sound reliable
         playStartupFromGesture().then(() => startBoot(3500));
       }
     });
@@ -1443,6 +1585,188 @@
     openApp('about');
     renderWifi();
     renderSound();
+
+    // ===== Right-click desktop menu logic (with submenus) =====
+    const desktopEl = document.getElementById("desktop");
+    const ctxMenu = document.getElementById("ctxMenu");
+    const gadgetsEl = document.getElementById("gadgets");
+
+    const chkLarge = document.getElementById("chkLarge");
+    const chkMedium = document.getElementById("chkMedium");
+    const chkSmall = document.getElementById("chkSmall");
+    const glassState = document.getElementById("glassState");
+
+    function closeCtx(){
+      ctxMenu.classList.remove("open");
+    }
+
+    function openCtxAt(x,y){
+      ctxMenu.classList.add("open");
+
+      requestAnimationFrame(() => {
+        const r = ctxMenu.getBoundingClientRect();
+        const pad = 10;
+        const nx = Math.min(window.innerWidth - r.width - pad, Math.max(pad, x));
+        const ny = Math.min(window.innerHeight - r.height - 60, Math.max(pad, y));
+        ctxMenu.style.left = nx + "px";
+        ctxMenu.style.top  = ny + "px";
+      });
+    }
+
+    function setIconSize(mode){
+      desktopEl.classList.remove("icons-large","icons-medium","icons-small");
+      desktopEl.classList.add("icons-" + mode);
+
+      chkLarge.textContent = mode === "large" ? "✓" : " ";
+      chkMedium.textContent = mode === "medium" ? "✓" : " ";
+      chkSmall.textContent = mode === "small" ? "✓" : " ";
+    }
+
+    // Wallpaper / tint / glass states
+    let wallMode = 0;
+    let tintMode = 0;
+    let aeroGlassOn = true;
+
+    function applyWallpaper(){
+      if(wallMode === 0){
+        document.body.style.background =
+          `radial-gradient(1200px 700px at 20% 30%, rgba(100,255,140,.30), transparent 60%),
+           radial-gradient(900px 600px at 80% 35%, rgba(70,190,255,.22), transparent 60%),
+           radial-gradient(1000px 700px at 55% 85%, rgba(255,255,255,.10), transparent 60%),
+           radial-gradient(900px 600px at 25% 85%, rgba(120,255,160,.18), transparent 55%),
+           linear-gradient(180deg, #0b2a1c 0%, #0b2634 35%, #071b24 100%)`;
+      } else if(wallMode === 1){
+        document.body.style.background =
+          `radial-gradient(1200px 700px at 30% 25%, rgba(90,210,255,.26), transparent 60%),
+           radial-gradient(1000px 700px at 70% 70%, rgba(120,255,170,.22), transparent 60%),
+           linear-gradient(180deg, #071a2b 0%, #092d2b 45%, #071622 100%)`;
+      } else {
+        document.body.style.background =
+          `radial-gradient(1200px 700px at 20% 30%, rgba(255,255,255,.10), transparent 60%),
+           radial-gradient(900px 600px at 80% 35%, rgba(120,255,170,.26), transparent 60%),
+           linear-gradient(180deg, #102d1b 0%, #0b1f2e 45%, #07121b 100%)`;
+      }
+      document.body.style.transition = "background 220ms ease";
+      setTimeout(() => (document.body.style.transition = ""), 260);
+    }
+
+    function applyTint(){
+      // Just slightly alter aurora intensity by adjusting element opacity
+      const aur = document.querySelector(".aurora");
+      const vig = document.querySelector(".vignette");
+      if(tintMode === 0){
+        aur.style.opacity = ".85";
+        vig.style.background = "radial-gradient(circle at 50% 35%, transparent 40%, rgba(0,0,0,.35) 100%)";
+      } else if(tintMode === 1){
+        aur.style.opacity = ".65";
+        vig.style.background = "radial-gradient(circle at 50% 35%, transparent 38%, rgba(0,0,0,.45) 100%)";
+      } else {
+        aur.style.opacity = ".95";
+        vig.style.background = "radial-gradient(circle at 50% 35%, transparent 42%, rgba(0,0,0,.30) 100%)";
+      }
+    }
+
+    function applyGlass(){
+      const root = document.documentElement;
+      if(aeroGlassOn){
+        root.style.setProperty("--glass1", "rgba(255,255,255,.22)");
+        root.style.setProperty("--glass2", "rgba(255,255,255,.10)");
+        root.style.setProperty("--task", "rgba(15,25,35,.55)");
+        root.style.setProperty("--task2", "rgba(10,15,22,.35)");
+        glassState.textContent = "On";
+      } else {
+        // "Basic" theme-ish
+        root.style.setProperty("--glass1", "rgba(255,255,255,.12)");
+        root.style.setProperty("--glass2", "rgba(0,0,0,.18)");
+        root.style.setProperty("--task", "rgba(10,10,10,.75)");
+        root.style.setProperty("--task2", "rgba(0,0,0,.55)");
+        glassState.textContent = "Off";
+      }
+    }
+
+    // Right click open
+    window.addEventListener("contextmenu", (e) => {
+      const inDesktop = e.target === document.body
+        || e.target.closest("#desktop")
+        || e.target.closest(".aurora")
+        || e.target.closest(".vignette");
+
+      const blocked = e.target.closest("#taskbar, #startMenu, .window, .panel, #modalBackdrop, #ctxMenu");
+
+      if(inDesktop && !blocked){
+        e.preventDefault();
+        toggleStartMenu(false);
+        closePanels();
+        openCtxAt(e.clientX, e.clientY);
+      } else {
+        closeCtx();
+      }
+    });
+
+    // Keep clicks inside menu from closing it
+    ctxMenu.addEventListener("click", (e) => e.stopPropagation());
+
+    // Actions
+    ctxMenu.addEventListener("click", (e) => {
+      const item = e.target.closest(".ctx-item");
+      if(!item) return;
+
+      // VIEW submenu
+      const view = item.getAttribute("data-view");
+      if(view){
+        setIconSize(view);
+        closeCtx();
+        return;
+      }
+
+      // PERSONALIZE submenu
+      const pers = item.getAttribute("data-pers");
+      if(pers){
+        if(pers === "wallpaper"){ wallMode = (wallMode + 1) % 3; applyWallpaper(); }
+        if(pers === "tint"){ tintMode = (tintMode + 1) % 3; applyTint(); }
+        if(pers === "glass"){ aeroGlassOn = !aeroGlassOn; applyGlass(); }
+        // keep menu open like Vista submenus, but it’s okay to close:
+        // closeCtx();
+        return;
+      }
+
+      const act = item.getAttribute("data-ctx");
+      if(!act) return;
+
+      if(act === "refresh"){
+        desktopEl.style.filter = "brightness(1.15)";
+        setTimeout(() => desktopEl.style.filter = "", 120);
+        closeCtx();
+      }
+
+      if(act === "gadgets"){
+        const isHidden = gadgetsEl.classList.contains("hidden");
+        if(isHidden) gadgetsEl.classList.remove("hidden");
+        else gadgetsEl.classList.add("hidden");
+        closeCtx();
+      }
+
+      if(act === "resolution"){
+        openApp("about");
+        // little hint bubble via About window
+        setTimeout(() => {
+          const note = document.querySelector('.window.focused .main');
+          if(note){
+            const p = document.createElement('div');
+            p.className = 'tile';
+            p.innerHTML = `<p class="t">Screen resolution (demo)</p><p class="d">On real Vista: Right-click desktop → Personalize → Display settings.</p>`;
+            note.prepend(p);
+          }
+        }, 60);
+        closeCtx();
+      }
+    });
+
+    // Initialize defaults
+    setIconSize("medium");
+    applyWallpaper();
+    applyTint();
+    applyGlass();
   </script>
 </body>
 </html>
