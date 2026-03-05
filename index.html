@@ -18,37 +18,21 @@
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; margin:0; font-family:"Segoe UI", Tahoma, Arial, sans-serif; overflow:hidden; }
-    body{
-      color: var(--text);
-      user-select:none;
-      position:relative;
-      background: #000;
-    }
+    body{ color: var(--text); user-select:none; position:relative; background:#000; }
 
-    /* Wallpaper layers */
-    #wallpaper{
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      background: #000 center center / cover no-repeat;
-      transform: translateZ(0);
-    }
+    #wallpaper{ position: fixed; inset: 0; z-index: -3; background:#000 center/cover no-repeat; transform: translateZ(0); }
     #wallpaperOverlay{
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events:none;
+      position: fixed; inset: 0; z-index: -2; pointer-events:none;
       background:
         radial-gradient(1200px 700px at 20% 30%, rgba(100,255,140,.22), transparent 60%),
         radial-gradient(900px 600px at 80% 35%, rgba(70,190,255,.18), transparent 60%),
         radial-gradient(1000px 700px at 55% 85%, rgba(255,255,255,.08), transparent 60%),
         linear-gradient(180deg, rgba(0,0,0,.05) 0%, rgba(0,0,0,.25) 100%);
-      opacity: .9;
+      opacity:.9;
     }
 
     .aurora{
-      position:absolute; inset:-20%;
-      z-index:-1;
+      position:absolute; inset:-20%; z-index:-1;
       background: conic-gradient(from 210deg at 30% 35%,
         rgba(120,255,170,.0),
         rgba(120,255,170,.22),
@@ -62,47 +46,36 @@
       pointer-events:none;
     }
     .vignette{
-      position:absolute; inset:0;
-      z-index:-1;
+      position:absolute; inset:0; z-index:-1; pointer-events:none;
       background: radial-gradient(circle at 50% 35%, transparent 40%, rgba(0,0,0,.35) 100%);
-      pointer-events:none;
     }
     .hidden{ display:none !important; }
 
-    /* ===== Boot GIF (place vista.gif next to index.html) ===== */
+    /* Boot GIF */
     #bootScreen{
-      position:fixed;
-      inset:0;
-      z-index:50000;
+      position:fixed; inset:0; z-index:50000;
       background:#000 url("vista.gif") center center / contain no-repeat;
       display:none;
     }
     #bootScreen.open{ display:block; }
 
-    /* ===== Shutdown GIF (place shutdown.gif next to index.html) ===== */
+    /* Shutdown GIF */
     #shutdownGifOverlay{
-      position:fixed;
-      inset:0;
-      z-index:40000;
+      position:fixed; inset:0; z-index:40000;
       background:#000 url("shutdown.gif") center center / contain no-repeat;
       display:none;
     }
     #shutdownGifOverlay.open{ display:block; }
 
-    /* ===== Powered-off black screen with typing text ===== */
+    /* Powered-off screen */
     #powerOff{
-      position:fixed;
-      inset:0;
-      z-index:41000;
-      background:#000;
-      display:none;
-      place-items:center;
+      position:fixed; inset:0; z-index:41000;
+      background:#000; display:none; place-items:center;
     }
     #powerOff.open{ display:grid; }
 
     #bootPcText{
-      font-size: 22px;
-      color: rgba(255,255,255,.92);
+      font-size: 22px; color: rgba(255,255,255,.92);
       text-shadow: 0 2px 10px rgba(0,0,0,.8);
       letter-spacing:.2px;
       cursor:pointer;
@@ -115,35 +88,19 @@
       min-width: 220px;
       text-align:center;
     }
-    #bootPcText:hover{
-      background: rgba(255,255,255,.10);
-      border-color: rgba(255,255,255,.14);
-    }
+    #bootPcText:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.14); }
     #bootPcText:active{ transform: translateY(1px); }
-    .caret{
-      display:inline-block;
-      width:10px;
-      margin-left:4px;
-      opacity:.9;
-      animation: blink 1s steps(1) infinite;
-    }
+    .caret{ display:inline-block; width:10px; margin-left:4px; opacity:.9; animation: blink 1s steps(1) infinite; }
     @keyframes blink{ 50%{opacity:0;} }
 
-    /* ===== Desktop icons ===== */
+    /* Desktop icons */
     #desktop{
       position:absolute; inset:0 0 48px 0;
       padding:18px;
       display:flex; gap:14px; flex-wrap:wrap; align-content:flex-start;
     }
-    .icon{
-      width:86px; display:flex; flex-direction:column; align-items:center; gap:8px;
-      padding:8px 6px; border-radius:10px; cursor:default;
-    }
-    .icon:hover{
-      background: rgba(255,255,255,.10);
-      outline: 1px solid rgba(255,255,255,.18);
-      backdrop-filter: blur(6px);
-    }
+    .icon{ width:86px; display:flex; flex-direction:column; align-items:center; gap:8px; padding:8px 6px; border-radius:10px; cursor:default; }
+    .icon:hover{ background: rgba(255,255,255,.10); outline: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(6px); }
     .icon:active{ transform: translateY(1px); }
     .icon .glyph{
       width:52px; height:52px; border-radius:12px; position:relative;
@@ -178,7 +135,6 @@
       radial-gradient(circle at 30% 25%, rgba(255,255,255,.75), rgba(255,255,255,.15) 45%, rgba(0,0,0,.10) 75%),
       linear-gradient(180deg, rgba(60,150,255,.30), rgba(0,0,0,.22)); }
 
-    /* Icon sizes (for View menu) */
     .icons-large .icon{ width: 96px; }
     .icons-large .icon .glyph{ width: 58px; height: 58px; }
     .icons-large .icon .label{ font-size: 13px; }
@@ -191,7 +147,7 @@
     .icons-small .icon .glyph{ width: 44px; height: 44px; border-radius: 10px; }
     .icons-small .icon .label{ font-size: 12px; }
 
-    /* ===== Windows layer ===== */
+    /* Windows layer */
     #windows{ position:absolute; inset:0 0 48px 0; pointer-events:none; }
     .window{
       position:absolute; width:520px; height:340px;
@@ -208,10 +164,7 @@
       background: radial-gradient(1000px 250px at 30% 0%, rgba(255,255,255,.28), transparent 55%);
       pointer-events:none;
     }
-    .window.focused{
-      box-shadow: 0 22px 55px rgba(0,0,0,.45);
-      border-color: rgba(255,255,255,.35);
-    }
+    .window.focused{ box-shadow: 0 22px 55px rgba(0,0,0,.45); border-color: rgba(255,255,255,.35); }
     .titlebar{
       height:40px; display:flex; align-items:center; gap:10px;
       padding:8px 10px;
@@ -303,7 +256,7 @@
     .tile .t{ font-size:13px; margin:0 0 6px; }
     .tile .d{ font-size:12.5px; margin:0; color: var(--muted); line-height:1.25; }
 
-    /* ===== Taskbar ===== */
+    /* Taskbar */
     #taskbar{
       position:absolute; left:0; right:0; bottom:0;
       height:48px;
@@ -388,7 +341,7 @@
     .tray-ic:hover{ background: rgba(255,255,255,.14); }
     .tray-ic.active{ outline: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.16); }
 
-    /* ===== Start Menu ===== */
+    /* Start Menu */
     #startMenu{
       position:absolute; left:10px; bottom:54px;
       width:360px; height:420px;
@@ -450,36 +403,29 @@
     }
     .power:hover{ filter: brightness(1.05); }
 
-    /* ===== Panels (Wi-Fi + Sound) ===== */
+    /* Panels */
     .panel{
-      position:absolute;
-      width: 320px;
+      position:absolute; width: 320px;
       border-radius:14px;
       background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
       border: 1px solid rgba(255,255,255,.24);
       box-shadow: 0 22px 60px rgba(0,0,0,.45);
       backdrop-filter: blur(16px) saturate(140%);
-      padding:12px;
-      display:none;
-      z-index: 10001;
+      padding:12px; display:none; z-index: 10001;
     }
     .panel.open{ display:block; }
     .panel h3{
-      margin:0 0 8px;
-      font-size:13px;
-      color: rgba(255,255,255,.92);
+      margin:0 0 8px; font-size:13px; color: rgba(255,255,255,.92);
       text-shadow: 0 1px 2px rgba(0,0,0,.55);
       display:flex; justify-content:space-between; align-items:center;
     }
     .panel .sub{ font-size:12px; color: var(--muted); margin:0 0 10px; }
     .panel .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:8px 0; }
     .chip{
-      padding:6px 10px;
-      border-radius:999px;
+      padding:6px 10px; border-radius:999px;
       background: rgba(0,0,0,.14);
       border:1px solid rgba(255,255,255,.12);
-      font-size:12px;
-      color: rgba(255,255,255,.88);
+      font-size:12px; color: rgba(255,255,255,.88);
       user-select:none;
     }
     .list{
@@ -500,9 +446,7 @@
     .net:hover{ background: rgba(255,255,255,.10); }
     .net small{ color: var(--muted); font-size:12px; }
     .badge{
-      font-size:11px;
-      padding:4px 8px;
-      border-radius:999px;
+      font-size:11px; padding:4px 8px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.08);
     }
@@ -510,14 +454,12 @@
       width:44px; height:24px; border-radius:999px;
       background: rgba(255,255,255,.14);
       border:1px solid rgba(255,255,255,.18);
-      position:relative;
-      cursor:pointer;
+      position:relative; cursor:pointer;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
       flex:0 0 auto;
     }
     .switch::after{
-      content:"";
-      position:absolute;
+      content:""; position:absolute;
       width:18px; height:18px; border-radius:999px;
       top:2px; left:2px;
       background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(0,0,0,.12));
@@ -530,12 +472,11 @@
       border-color: rgba(255,255,255,.22);
     }
     .switch.on::after{ transform: translateX(20px); }
+
     .slider-wrap{ display:flex; align-items:center; gap:10px; width:100%; }
     input[type="range"]{
       -webkit-appearance:none;
-      width:100%;
-      height:6px;
-      border-radius:999px;
+      width:100%; height:6px; border-radius:999px;
       background: rgba(255,255,255,.18);
       outline:none;
       border:1px solid rgba(255,255,255,.14);
@@ -550,7 +491,7 @@
       cursor:pointer;
     }
 
-    /* ===== Gadgets sidebar ===== */
+    /* Gadgets sidebar */
     #gadgets{
       position:absolute; top:14px; right:14px;
       width: 200px;
@@ -567,9 +508,7 @@
     }
     .g-head{
       padding:10px 10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+      display:flex; justify-content:space-between; align-items:center;
       border-bottom: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.08);
     }
@@ -589,7 +528,7 @@
       transition: width .35s ease;
     }
     .note{
-      width:100%; min-height:70px; resize:none;
+      width:100%; min-height:80px; resize:none;
       border-radius:12px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.10);
@@ -601,7 +540,7 @@
       user-select:text;
     }
 
-    /* ===== Shutdown dialog ===== */
+    /* Shutdown dialog */
     #modalBackdrop{
       position:absolute; inset:0;
       background: rgba(0,0,0,.35);
@@ -611,8 +550,7 @@
     }
     #modalBackdrop.open{ display:block; }
     .dialog{
-      position:absolute;
-      width: 420px;
+      position:absolute; width: 420px;
       left:50%; top:50%;
       transform: translate(-50%,-50%);
       border-radius:14px;
@@ -626,20 +564,15 @@
       padding:12px 12px;
       border-bottom: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.12);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
     }
     .dlg-top b{ font-size:13px; text-shadow: 0 1px 2px rgba(0,0,0,.55); }
     .dlg-body{ padding:12px; }
     .dlg-body p{ margin:0 0 10px; font-size:12.5px; color: rgba(255,255,255,.88); }
     .choiceRow{ display:flex; gap:10px; flex-wrap:wrap; }
     .choice{
-      flex:1;
-      min-width:120px;
-      padding:10px;
-      border-radius:14px;
+      flex:1; min-width:120px;
+      padding:10px; border-radius:14px;
       border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.10);
       cursor:pointer;
@@ -650,15 +583,12 @@
     .choice .sm{ font-size:12px; color: var(--muted); margin-top:4px; }
     .dlg-actions{
       padding:12px;
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
+      display:flex; justify-content:flex-end; gap:10px;
       border-top: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.08);
     }
     .btn{
-      padding:8px 10px;
-      border-radius:12px;
+      padding:8px 10px; border-radius:12px;
       background: rgba(255,255,255,.10);
       border:1px solid rgba(255,255,255,.14);
       cursor:pointer;
@@ -667,7 +597,7 @@
     }
     .btn:hover{ background: rgba(255,255,255,.14); }
 
-    /* ===== Right-click context menu + submenus ===== */
+    /* Right-click context menu */
     #ctxMenu{
       position: fixed;
       min-width: 250px;
@@ -681,11 +611,8 @@
       display:none;
     }
     #ctxMenu.open{ display:block; }
-
     .ctx-item{
-      display:flex;
-      align-items:center;
-      gap:10px;
+      display:flex; align-items:center; gap:10px;
       padding: 10px 10px;
       border-radius: 12px;
       cursor: pointer;
@@ -695,38 +622,20 @@
       text-shadow: 0 1px 2px rgba(0,0,0,.55);
       position:relative;
     }
-    .ctx-item:hover{
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.14);
-    }
+    .ctx-item:hover{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.14); }
     .ctx-item:active{ transform: translateY(1px); }
-
     .ctx-ic{
-      width: 18px;
-      height: 18px;
-      border-radius: 6px;
-      display:grid;
-      place-items:center;
+      width: 18px; height: 18px; border-radius: 6px;
+      display:grid; place-items:center;
       background: rgba(0,0,0,.14);
       border: 1px solid rgba(255,255,255,.12);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
       font-size: 12px;
     }
-    .ctx-sep{
-      height:1px;
-      margin: 6px 6px;
-      background: rgba(255,255,255,.14);
-    }
-    .ctx-sub{
-      font-size: 12px;
-      color: rgba(255,255,255,.72);
-      margin-left:auto;
-    }
-
+    .ctx-sep{ height:1px; margin: 6px 6px; background: rgba(255,255,255,.14); }
+    .ctx-sub{ font-size: 12px; color: rgba(255,255,255,.72); margin-left:auto; }
     .ctx-submenu{
-      position: absolute;
-      top: 0;
-      left: calc(100% + 6px);
+      position: absolute; top: 0; left: calc(100% + 6px);
       min-width: 220px;
       border-radius: 14px;
       padding: 6px;
@@ -738,33 +647,23 @@
       z-index: 60001;
     }
     .ctx-item.has-sub:hover > .ctx-submenu{ display:block; }
-    .ctx-check{
-      width:18px; display:inline-block;
-      color: rgba(255,255,255,.85);
-      text-align:center;
-      margin-left:-4px;
-    }
+    .ctx-check{ width:18px; display:inline-block; color: rgba(255,255,255,.85); text-align:center; margin-left:-4px; }
   </style>
 </head>
 
 <body>
-  <!-- Wallpaper -->
   <div id="wallpaper" aria-hidden="true"></div>
   <div id="wallpaperOverlay" aria-hidden="true"></div>
-
   <div class="aurora"></div>
   <div class="vignette"></div>
 
-  <!-- Boot & Shutdown GIF overlays -->
   <div id="bootScreen" aria-hidden="true"></div>
   <div id="shutdownGifOverlay" aria-hidden="true"></div>
 
-  <!-- Powered off screen -->
   <div id="powerOff" aria-hidden="false">
     <div id="bootPcText" title="Click to boot">Boot up PC<span class="caret">█</span></div>
   </div>
 
-  <!-- Gadgets -->
   <div id="gadgets" aria-label="Gadgets sidebar">
     <div class="gadget">
       <div class="g-head"><b>Clock</b><span class="g-small" id="gDate"></span></div>
@@ -785,6 +684,7 @@
       <div class="g-body">
         <textarea class="note" id="noteBox" spellcheck="false">Vista Web:
 • Default wallpaper: vista-w.jpg
+• Wi-Fi Pass: vista123
 • Boot GIF + startup sound
 • Shutdown GIF + shutdown sound
 • Wi-Fi + volume panel
@@ -802,7 +702,6 @@
 
   <div id="windows" aria-label="Windows layer"></div>
 
-  <!-- Start Menu -->
   <div id="startMenu" role="dialog" aria-label="Start Menu">
     <div class="start-left">
       <div class="start-search"><span style="opacity:.8">🔎</span><input id="startSearch" placeholder="Start Search" /></div>
@@ -830,7 +729,6 @@
     </div>
   </div>
 
-  <!-- Wi-Fi Panel -->
   <div id="wifiPanel" class="panel" role="dialog" aria-label="Wi-Fi Panel">
     <h3><span>Wireless Networks</span><span class="chip" id="wifiStatusChip">Wi-Fi: On</span></h3>
     <p class="sub">Select a network to connect (demo).</p>
@@ -848,7 +746,6 @@
     </div>
   </div>
 
-  <!-- Sound Panel -->
   <div id="soundPanel" class="panel" role="dialog" aria-label="Sound Panel">
     <h3><span>Volume</span><span class="chip" id="volChip">70%</span></h3>
     <p class="sub">Drag the slider to change volume (demo).</p>
@@ -865,7 +762,6 @@
     </div>
   </div>
 
-  <!-- Taskbar -->
   <div id="taskbar" aria-label="Taskbar">
     <div id="startOrb" title="Start"></div>
     <div class="quicklaunch" aria-label="Quick Launch">
@@ -884,7 +780,6 @@
     </div>
   </div>
 
-  <!-- Shutdown dialog -->
   <div id="modalBackdrop" aria-hidden="true">
     <div class="dialog" role="dialog" aria-label="Shut Down Windows">
       <div class="dlg-top">
@@ -910,7 +805,6 @@
     </div>
   </div>
 
-  <!-- Right-click context menu -->
   <div id="ctxMenu" role="menu" aria-label="Desktop menu">
     <div class="ctx-item has-sub" data-ctx="view">
       <div class="ctx-ic">👁️</div>
@@ -956,8 +850,8 @@
     // vista-w.jpg   (CUSTOM WALLPAPER)
 
     const OS_NAME = "Windows Vista Ultimate";
+    const WIFI_PASS = "vista123";
 
-    // ===== Elements =====
     const wallpaperEl = document.getElementById("wallpaper");
     const bootScreen = document.getElementById("bootScreen");
     const shutdownGifOverlay = document.getElementById("shutdownGifOverlay");
@@ -967,9 +861,8 @@
 
     document.getElementById("editionLabel").textContent = OS_NAME;
 
-    // ===== Wallpaper system (CUSTOM INCLUDED + CYCLES) =====
     const wallpapers = [
-      { type: "image", src: "vista-w.jpg", name: "vista-w.jpg" }, // <-- CUSTOM (must match file name + path EXACTLY)
+      { type: "image", src: "vista-w.jpg", name: "vista-w.jpg" },
       { type: "gradient", name: "Aurora Green",
         css: `radial-gradient(1200px 700px at 20% 30%, rgba(100,255,140,.30), transparent 60%),
               radial-gradient(900px 600px at 80% 35%, rgba(70,190,255,.22), transparent 60%),
@@ -981,29 +874,23 @@
               radial-gradient(1000px 700px at 70% 70%, rgba(120,255,170,.22), transparent 60%),
               linear-gradient(180deg, #071a2b 0%, #092d2b 45%, #071622 100%)` }
     ];
-
-    let wallMode = 0; // start on CUSTOM
+    let wallMode = 0;
 
     function applyWallpaper(){
       const w = wallpapers[wallMode];
-
       if(wallpaperLabel) wallpaperLabel.textContent = `Current: ${w.name}`;
-
       if(w.type === "image"){
-        // Cache-buster so GH Pages / browser doesn't keep old image
         const bust = Date.now();
         wallpaperEl.style.background = `#000 url("${w.src}?v=${bust}") center center / cover no-repeat`;
       } else {
         wallpaperEl.style.background = w.css;
       }
     }
-
     function nextWallpaper(){
       wallMode = (wallMode + 1) % wallpapers.length;
       applyWallpaper();
     }
 
-    // ===== UI visibility groups =====
     const uiToHide = ["desktop","windows","taskbar","gadgets","startMenu","wifiPanel","soundPanel","modalBackdrop"]
       .map(id => document.getElementById(id))
       .filter(Boolean);
@@ -1012,21 +899,8 @@
       uiToHide.forEach(el => el.classList.toggle("hidden", !visible));
     }
 
-    // Start powered-off
-    bootScreen.classList.remove("open");
-    shutdownGifOverlay.classList.remove("open");
-    setUIVisible(false);
-    powerOff.classList.add("open");
-
-    // ===== Audio helpers =====
     async function tryPlay(aud){
-      try{
-        aud.currentTime = 0;
-        await aud.play();
-        return true;
-      }catch{
-        return false;
-      }
+      try{ aud.currentTime = 0; await aud.play(); return true; } catch{ return false; }
     }
 
     let startupPlayed = false;
@@ -1039,7 +913,6 @@
       if(ok) startupPlayed = true;
       return ok;
     }
-
     function playShutdownSound(){
       const s = new Audio("windows-vista-shutdown.mp3");
       s.preload = "auto";
@@ -1047,7 +920,6 @@
       tryPlay(s);
     }
 
-    // ===== Power-off typing =====
     let typeTimer = null;
     function typeBootText() {
       if (typeTimer) { clearInterval(typeTimer); typeTimer = null; }
@@ -1061,9 +933,7 @@
         if (i > msg.length) { clearInterval(typeTimer); typeTimer = null; }
       }, 65);
     }
-    typeBootText();
 
-    // ===== Boot =====
     function startBoot(ms = 3500){
       powerOff.classList.remove("open");
       powerOff.setAttribute("aria-hidden","true");
@@ -1083,12 +953,18 @@
       }, ms);
     }
 
+    // Start powered-off
+    bootScreen.classList.remove("open");
+    shutdownGifOverlay.classList.remove("open");
+    setUIVisible(false);
+    powerOff.classList.add("open");
+    typeBootText();
+
     bootPcText.addEventListener("click", async () => {
       await playStartupFromGesture();
       startBoot(3500);
     });
 
-    // ===== Clock (taskbar + gadget) =====
     const clockEl = document.getElementById('clock');
     const gClockEl = document.getElementById('gClock');
     const gDateEl  = document.getElementById('gDate');
@@ -1104,7 +980,6 @@
     setInterval(updateClocks, 1000);
     updateClocks();
 
-    // ===== CPU gadget (simulated) =====
     const cpuBar = document.getElementById('cpuBar');
     const cpuPct = document.getElementById('cpuPct');
     setInterval(() => {
@@ -1116,7 +991,6 @@
       cpuPct.textContent = next + "%";
     }, 900);
 
-    // ===== Window manager =====
     const windowsLayer = document.getElementById('windows');
     const tasksBar = document.getElementById('tasks');
     const startOrb = document.getElementById('startOrb');
@@ -1128,51 +1002,30 @@
 
     const templates = {
       computer: { title:"Computer", body:() => `
-        <div class="sidebar">
-          <div class="side-title">Tasks</div>
-          <div class="side-item" data-action="about">About</div>
-        </div>
+        <div class="sidebar"><div class="side-title">Tasks</div><div class="side-item" data-action="about">About</div></div>
         <div class="main">
-          <div class="hero">
-            <div><h2>Computer</h2><p>Vista glass window demo.</p></div>
-            <div class="pill">Aero</div>
-          </div>
+          <div class="hero"><div><h2>Computer</h2><p>Vista glass window demo.</p></div><div class="pill">Aero</div></div>
           <div class="tiles">
             <div class="tile"><p class="t">Local Disk (C:)</p><p class="d">System</p></div>
             <div class="tile"><p class="t">Network</p><p class="d">Workgroup</p></div>
           </div>
-        </div>
-      `},
+        </div>`},
       folder: { title:"Documents", body:() => `
-        <div class="sidebar">
-          <div class="side-title">Favorites</div>
-          <div class="side-item" data-action="about">About</div>
-        </div>
+        <div class="sidebar"><div class="side-title">Favorites</div><div class="side-item" data-action="about">About</div></div>
         <div class="main">
-          <div class="hero">
-            <div><h2>Documents</h2><p>Demo folder list.</p></div>
-            <div class="pill">Details</div>
-          </div>
+          <div class="hero"><div><h2>Documents</h2><p>Demo folder list.</p></div><div class="pill">Details</div></div>
           <div class="tile"><p class="t">Files</p><p class="d">• Notes.txt<br>• Photos<br>• Setup.exe</p></div>
-        </div>
-      `},
+        </div>`},
       recycle: { title:"Recycle Bin", body:() => `
         <div class="sidebar"><div class="side-title">Tasks</div><div class="side-item" data-action="about">About</div></div>
         <div class="main">
-          <div class="hero">
-            <div><h2>Recycle Bin</h2><p>Empty (demo).</p></div>
-            <div class="pill">Glass</div>
-          </div>
+          <div class="hero"><div><h2>Recycle Bin</h2><p>Empty (demo).</p></div><div class="pill">Glass</div></div>
           <div class="tile"><p class="t">Deleted items</p><p class="d">Nothing to display.</p></div>
-        </div>
-      `},
+        </div>`},
       ie: { title:"Internet Explorer", body:() => `
         <div class="sidebar"><div class="side-title">Links</div><div class="side-item" data-action="about">About</div></div>
         <div class="main">
-          <div class="hero">
-            <div><h2>Internet Explorer</h2><p>Fake address bar.</p></div>
-            <div class="pill">Protected Mode</div>
-          </div>
+          <div class="hero"><div><h2>Internet Explorer</h2><p>Fake address bar.</p></div><div class="pill">Protected Mode</div></div>
           <div class="tile">
             <p class="t">Address</p>
             <p class="d">
@@ -1180,30 +1033,20 @@
               value="https://www.microsoft.com/" />
             </p>
           </div>
-        </div>
-      `},
+        </div>`},
       about: { title:"About", body:() => `
         <div class="sidebar"><div class="side-title">Info</div>
           <div class="side-item">Wallpaper: vista-w.jpg</div>
+          <div class="side-item">Wi-Fi Pass: ${WIFI_PASS}</div>
           <div class="side-item">Boot GIF: vista.gif</div>
           <div class="side-item">Shutdown GIF: shutdown.gif</div>
           <div class="side-item">Edition: ${OS_NAME}</div>
         </div>
         <div class="main">
-          <div class="hero">
-            <div><h2>${OS_NAME}</h2><p>Custom wallpaper enabled.</p></div>
-            <div class="pill">Aero Glass</div>
-          </div>
-          <div class="tile">
-            <p class="t">Wallpaper</p>
-            <p class="d">Right-click desktop → Personalize → Wallpaper (cycle).</p>
-          </div>
-          <div class="tile">
-            <p class="t">Tip</p>
-            <p class="d">If your custom wallpaper still doesn’t show on GitHub Pages, open <b>/vista-w.jpg</b> in your browser to confirm it’s not 404.</p>
-          </div>
-        </div>
-      `}
+          <div class="hero"><div><h2>${OS_NAME}</h2><p>Custom wallpaper + Wi-Fi password.</p></div><div class="pill">Aero Glass</div></div>
+          <div class="tile"><p class="t">Wallpaper</p><p class="d">Right-click desktop → Personalize → Wallpaper (cycle).</p></div>
+          <div class="tile"><p class="t">Wi-Fi</p><p class="d">All networks require the password: <b>${WIFI_PASS}</b>.</p></div>
+        </div>`}
     };
 
     function focusWindow(id){
@@ -1360,7 +1203,6 @@
       });
     });
 
-    // Quicklaunch + start menu items
     document.querySelectorAll('[data-open]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const appId = btn.getAttribute('data-open');
@@ -1370,7 +1212,6 @@
       });
     });
 
-    // Start menu
     function toggleStartMenu(force){
       const open = (typeof force === 'boolean') ? force : !startMenu.classList.contains('open');
       startMenu.classList.toggle('open', open);
@@ -1387,7 +1228,6 @@
       });
     });
 
-    // Wi-Fi + Sound panels
     const netBtn = document.getElementById('netBtn');
     const sndBtn = document.getElementById('sndBtn');
     const wifiPanel = document.getElementById('wifiPanel');
@@ -1409,9 +1249,10 @@
       on: true,
       connected: null,
       networks: [
-        { name: "Varka Free Wifi", sec: "Open", strength: "Excellent" },
-        { name: "wireless", sec: "WPA2", strength: "Excellent" },
-        { name: "msadif", sec: "WPA2", strength: "Good" }
+        { name: "Varka Free Wifi", sec: "WPA2", strength: "Excellent", pass: WIFI_PASS },
+        { name: "vistaWi-Fi",      sec: "WPA2", strength: "Excellent",      pass: WIFI_PASS },
+        { name: "wireless",      sec: "WPA2", strength: "Good",      pass: WIFI_PASS },
+        { name: "msadif",      sec: "WPA2", strength: "Fair",      pass: WIFI_PASS },
       ]
     };
     const audioUI = { volume: 70, muted: false, lastVolume: 70 };
@@ -1431,6 +1272,7 @@
       netBtn.classList.remove('active');
       sndBtn.classList.remove('active');
     }
+
     function renderWifi(){
       wifiToggle.classList.toggle('on', wifi.on);
       wifiStatusChip.textContent = `Wi-Fi: ${wifi.on ? "On" : "Off"}`;
@@ -1442,6 +1284,7 @@
         wifiList.innerHTML = `<div class="net" style="cursor:default;"><div><b style="font-size:12.5px;">Wi-Fi is Off</b><br><small>Turn Wi-Fi on to see networks.</small></div><span class="badge">Off</span></div>`;
         return;
       }
+
       wifi.networks.forEach(n => {
         const row = document.createElement("div");
         row.className = "net";
@@ -1452,16 +1295,29 @@
           </div>
           <span class="badge">${wifi.connected === n.name ? "Connected" : "Connect"}</span>
         `;
-        row.addEventListener("click", (e) => { e.stopPropagation(); wifi.connected = n.name; renderWifi(); });
+
+        row.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const pw = prompt(`Enter the network security key for "${n.name}"`);
+          if(pw === (n.pass || WIFI_PASS)){
+            wifi.connected = n.name;
+          } else {
+            alert("The network security key is incorrect.");
+          }
+          renderWifi();
+        });
+
         wifiList.appendChild(row);
       });
     }
+
     function renderSound(){
       volSlider.value = String(audioUI.volume);
       volChip.textContent = `${audioUI.muted ? 0 : audioUI.volume}%`;
       muteState.textContent = audioUI.muted ? "Muted" : "Not muted";
       sndBtn.textContent = audioUI.muted || audioUI.volume === 0 ? "🔇" : "🔊";
     }
+
     function toggleWifiPanel(e){
       e.stopPropagation();
       const open = !wifiPanel.classList.contains('open');
@@ -1498,6 +1354,7 @@
       wifiHint.textContent = "Scanning…";
       setTimeout(() => { wifiHint.textContent = wifi.on ? "Networks available" : "Wi-Fi is turned off"; }, 550);
     });
+
     volSlider.addEventListener('input', (e) => {
       audioUI.volume = parseInt(e.target.value, 10);
       if(audioUI.volume > 0){ audioUI.lastVolume = audioUI.volume; audioUI.muted = false; }
@@ -1511,7 +1368,6 @@
       renderSound();
     });
 
-    // Shutdown dialog
     const modalBackdrop = document.getElementById('modalBackdrop');
     const cancelShutdown = document.getElementById('cancelShutdown');
     const powerBtn = document.getElementById('powerBtn');
@@ -1596,7 +1452,7 @@
       });
     });
 
-    // ===== Right click menu logic =====
+    // Context menu
     const desktopEl = document.getElementById("desktop");
     const ctxMenu = document.getElementById("ctxMenu");
     const gadgetsEl = document.getElementById("gadgets");
@@ -1666,7 +1522,6 @@
         || e.target.closest(".vignette");
 
       const blocked = e.target.closest("#taskbar, #startMenu, .window, .panel, #modalBackdrop, #ctxMenu");
-
       if(inDesktop && !blocked){
         e.preventDefault();
         toggleStartMenu(false);
@@ -1688,7 +1543,7 @@
 
       const pers = item.getAttribute("data-pers");
       if(pers){
-        if(pers === "wallpaper") nextWallpaper();          // <-- cycles INCLUDING vista-w.jpg
+        if(pers === "wallpaper") nextWallpaper();
         if(pers === "tint"){ tintMode = (tintMode + 1) % 3; applyTint(); }
         if(pers === "glass"){ aeroGlassOn = !aeroGlassOn; applyGlass(); }
         return;
@@ -1708,7 +1563,6 @@
       }
     });
 
-    // Click-away closes menus/panels/context menu
     window.addEventListener('click', () => {
       if(modalBackdrop.classList.contains('open')) return;
       toggleStartMenu(false);
@@ -1717,7 +1571,6 @@
     });
     [startMenu, wifiPanel, soundPanel, modalBackdrop].forEach(el => el.addEventListener('click', (e) => e.stopPropagation()));
 
-    // Keyboard
     window.addEventListener('keydown', (e) => {
       if(e.key === 'Escape'){
         if(modalBackdrop.classList.contains('open')) closeShutdownDialog();
@@ -1732,15 +1585,14 @@
 
     // Init
     setIconSize("medium");
-    applyWallpaper();   // <-- default to CUSTOM vista-w.jpg
+    applyWallpaper();
     applyTint();
     applyGlass();
 
-    // Open About window by default (once booted)
+    // Open About by default (will be visible after boot)
     openApp('about');
     renderWifi();
     renderSound();
   </script>
 </body>
 </html>
-
